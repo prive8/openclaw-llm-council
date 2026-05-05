@@ -184,7 +184,7 @@ Lite mode is ~4 spawns and ~400 words output. Full is ~11 spawns and ~1,500 word
 
 ## Adapting for Other Users
 
-The vault path (`/mnt/c/Users/pierc/ObsidianVault/Memo/`) is hardcoded in Step 8 and Step 9. Update it to your vault path before using. The skill is designed to be path-agnostic otherwise.
+The vault path is hardcoded in SKILL.md Steps 7 and 8. Before publishing or sharing, update it to your vault path. The skill is path-agnostic otherwise -- only the save location needs customization per installation.
 
 Model configuration is per-user via `~/.openclaw/llm-council-config.json`. Share the example config with new users as a starting point.
 
