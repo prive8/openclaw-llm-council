@@ -1,0 +1,11 @@
+{
+  "advisor_models": {
+    "contrarian": "minimax/MiniMax-M2.7",
+    "first-principles": "minimax/MiniMax-M2.7",
+    "expansionist": "minimax/MiniMax-M2.7",
+    "outsider": "minimax/MiniMax-M2.7",
+    "executor": "minimax/MiniMax-M2.7",
+    "chairman": "minimax/MiniMax-M2.7"
+  },
+  "default_model": "minimax/MiniMax-M2.7"
+}
