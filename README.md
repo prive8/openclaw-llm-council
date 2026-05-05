@@ -1,5 +1,9 @@
 # LLM Council
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![OpenClaw Skill](https://img.shields.io/badge/OpenClaw-Skill-blue.svg)](https://docs.openclaw.ai)
+[![ClawHub](https://img.shields.io/badge/ClawHub-Install-gold.svg)](https://clawhub.com)
+
 A multi-model AI decision council for OpenClaw agents. Five specialized advisors independently analyze a question, peer-review each other's responses anonymously, and a chairman synthesizes a final verdict.
 
 Based on [Karpathy's LLM Council](https://github.com/karpathy/llm-council) methodology, adapted as an OpenClaw agent skill.
@@ -15,7 +19,7 @@ Instead of asking one AI and accepting whatever it says, the council runs your q
 | **Contrarian** | What's wrong, missing, or about to fail |
 | **First Principles** | Are we asking the right question? |
 | **Expansionist** | What's the upside everyone's missing? |
-| **Outsider** | Fresh eyes -- whatconfuses people with no context? |
+| **Outsider** | Fresh eyes -- what confuses people with no context? |
 | **Executor** | Can it be done? What's the first step Monday morning? |
 
 The advisors work in parallel, then anonymously review each other, then a chairman produces the final synthesis.
@@ -36,19 +40,28 @@ The advisors work in parallel, then anonymously review each other, then a chairm
 
 ---
 
-## Setup
+## Installation
 
-### 1. Install the skill
-
-If using ClawHub:
+### Option 1: ClawHub (recommended)
 
 ```bash
 clawhub install llm-council
 ```
 
-Or place `SKILL.md` in your skills directory (`~/.openclaw/skills/llm-council/`).
+### Option 2: Manual
 
-### 2. Configure models (optional)
+Place `SKILL.md` in your skills directory:
+
+```bash
+mkdir -p ~/.openclaw/skills/llm-council
+# Copy SKILL.md, README.md, and llm-council-config.example.json to that directory
+```
+
+---
+
+## Configuration
+
+### Model Selection (optional)
 
 Create `~/.openclaw/llm-council-config.json` to assign different models per advisor:
 
@@ -70,15 +83,15 @@ Each advisor runs as a separate sub-agent, so using different models gives genui
 
 Model IDs must match your OpenClaw provider's catalogue.
 
-### 3. Vault path (for transcript storage)
+### Vault Path
 
-The skill saves transcripts to a vault path. Update the path in `SKILL.md` Step 8 to match your Obsidian vault location, or replace with any directory you want council transcripts saved to.
+The skill saves transcripts to a vault path. Update the path in `SKILL.md` Steps 8 and 9 to match your vault location before use.
 
 ---
 
 ## Usage
 
-### Trigger phrases
+### Trigger Phrases
 
 **Lite mode:**
 - "quick council this"
@@ -102,7 +115,7 @@ The skill saves transcripts to a vault path. Update the path in `SKILL.md` Step 
 - "deep council this"
 - "full council"
 
-### Example sessions
+### Example Sessions
 
 **Lite:**
 > "lite council: should I take that meeting or focus on shipping the feature?"
@@ -113,10 +126,13 @@ The skill saves transcripts to a vault path. Update the path in `SKILL.md` Step 
 **Deep:**
 > "deep council this: I'm thinking about going full-time on my consulting business. I have 6 months runway."
 
-### What you get
+### What You Get
 
-- **Lite/Full**: Transcript saved to vault at `Memo/council-YYYY-MM-DD-[slug].md`
-- **Deep**: Transcript saved to vault + HTML report saved to workspace + council index updated
+| Mode | Output |
+|------|--------|
+| Lite | Transcript saved to vault at `Memo/council-YYYY-MM-DD-[slug].md` |
+| Full | Transcript saved to vault |
+| Deep | Transcript saved to vault + HTML report to workspace + council index updated |
 
 The chairman always delivers:
 - Where advisors agree
@@ -158,17 +174,6 @@ User Question
 
 ---
 
-## File Structure
-
-```
-llm-council/
-├── SKILL.md                          # Main skill file
-├── llm-council-config.example.json    # Model configuration example
-└── README.md                         # This file
-```
-
----
-
 ## Token Cost Estimation
 
 A full Deep council (5 advisors + 5 peer reviews + chairman synthesis):
@@ -178,15 +183,35 @@ A full Deep council (5 advisors + 5 peer reviews + chairman synthesis):
 
 Total output: ~1,800 words × model pricing. Input context is larger due to all responses being fed to each reviewer and chairman.
 
-Lite mode is ~4 spawns and ~400 words output. Full is ~11 spawns and ~1,500 words output.
+Lite mode: ~4 spawns and ~400 words output.
+Full mode: ~11 spawns and ~1,500 words output.
 
 ---
 
-## Adapting for Other Users
+## Security & Privacy
 
-The vault path is hardcoded in SKILL.md Steps 7 and 8. Before publishing or sharing, update it to your vault path. The skill is path-agnostic otherwise -- only the save location needs customization per installation.
+- **No external data transmission.** All processing is local via OpenClaw sub-agent spawning.
+- **No credential storage.** Model configuration uses only local file paths and model identifiers.
+- **Sub-agent isolation.** Each advisor runs as a separate `sessions_spawn` sub-agent with no filesystem, network, or external call access.
+- **No shell execution.** The skill does not execute shell commands or modify the filesystem beyond writing transcripts.
 
-Model configuration is per-user via `~/.openclaw/llm-council-config.json`. Share the example config with new users as a starting point.
+---
+
+## Trust Statement
+
+By using this skill, data stays entirely within your OpenClaw agent runtime. No information is sent to third parties. Only install if you trust your OpenClaw configuration and local model provider.
+
+---
+
+## Contributing
+
+Contributions welcome. Open an issue or submit a PR on [GitHub](https://github.com/prive8/openclaw-llm-council).
+
+---
+
+## License
+
+MIT License - see [GitHub repo](https://github.com/prive8/openclaw-llm-council) for details.
 
 ---
 
@@ -194,12 +219,13 @@ Model configuration is per-user via `~/.openclaw/llm-council-config.json`. Share
 
 ### 1.1.0
 - Added configurable per-advisor model selection via `llm-council-config.json`
-- Added model usage tracking in transcripts
-- Added model info to HTML report footer (Deep mode)
+- Added model usage tracking in transcripts and HTML reports
+- Added External Endpoints, Security & Privacy, Trust Statement sections (ClawHub compliance)
+- Added Model Invocation Note section
 
 ### 1.0.0
 - Three-tier mode system (Lite/Full/Deep)
 - Vault-based transcript storage with duplicate detection
 - Council index for Deep mode cross-reference
 - HTML report generation for Deep mode
-- Original implementation
+- Initial implementation
